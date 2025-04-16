@@ -8,7 +8,7 @@ resource "random_string" "this" {
 }
 
 data "tfe_organization" "this" {
-  name = "sl-migration-cert-xyz"  # Replace with the exact org name you created
+  name = "sl-migration-cert-xyz"  # Replace with your actual Terraform Cloud organization name
 }
 
 resource "tfe_project" "this" {
@@ -70,4 +70,8 @@ resource "tfe_workspace" "one_eight_one" {
   force_delete      = true
 
   vcs_repo {
-    identifier     = "
+    identifier     = "ANawle/spacelift-migration-test"
+    branch         = "main"
+    oauth_token_id = tfe_oauth_client.this.oauth_token_id
+  }
+}
