@@ -11,14 +11,13 @@ data "tfe_organization" "this" {
   name = "sl-migration-cert-xyz"  # Replace with the exact org name you created
 }
 
-
 resource "tfe_project" "this" {
-  organization = tfe_organization.this.name
+  organization = data.tfe_organization.this.name
   name         = "sl-migration-certification-project"
 }
 
 resource "tfe_oauth_client" "this" {
-  organization     = tfe_organization.this.name
+  organization     = data.tfe_organization.this.name
   api_url          = "https://api.github.com"
   http_url         = "https://github.com"
   oauth_token      = var.github_pat
@@ -29,7 +28,7 @@ resource "tfe_workspace" "this" {
   for_each = local.iterator
 
   name              = "my-amazing-workspace-${each.key}"
-  organization      = tfe_organization.this.name
+  organization      = data.tfe_organization.this.name
   project_id        = tfe_project.this.id
   tag_names         = ["amazing", "workspace", each.key]
   terraform_version = "1.5.7"
@@ -50,7 +49,7 @@ resource "tfe_workspace_settings" "local" {
 
 resource "tfe_workspace" "local_no_vcs" {
   name         = "my-amazing-workspace-local-no-vcs"
-  organization = tfe_organization.this.name
+  organization = data.tfe_organization.this.name
   project_id   = tfe_project.this.id
   tag_names    = ["amazing", "workspace", "local-no-vcs"]
   force_delete = true
@@ -63,7 +62,7 @@ resource "tfe_workspace_settings" "local_no_vcs" {
 
 resource "tfe_workspace" "one_eight_one" {
   name              = "my-amazing-workspace-one-eight-one"
-  organization      = tfe_organization.this.name
+  organization      = data.tfe_organization.this.name
   project_id        = tfe_project.this.id
   tag_names         = ["amazing", "workspace", "one-eight-one"]
   terraform_version = "1.8.1"
@@ -71,8 +70,4 @@ resource "tfe_workspace" "one_eight_one" {
   force_delete      = true
 
   vcs_repo {
-    identifier     = "ANawle/spacelift-migration-test"
-    branch         = "main"
-    oauth_token_id = tfe_oauth_client.this.oauth_token_id
-  }
-}
+    identifier     = "
