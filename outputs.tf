@@ -1,3 +1,3 @@
 output "organization_name" {
-  value = tfe_organization.this.name
+  value = data.tfe_organization.this.name
 }
