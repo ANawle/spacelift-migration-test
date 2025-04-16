@@ -7,10 +7,10 @@ resource "random_string" "this" {
   special = false
 }
 
-resource "tfe_organization" "this" {
-  name  = "sl-migration-cert-${random_string.this.result}"
-  email = var.organization_admin_email
+data "tfe_organization" "this" {
+  name = "sl-migration-cert-xyz"  # Replace with the exact org name you created
 }
+
 
 resource "tfe_project" "this" {
   organization = tfe_organization.this.name
